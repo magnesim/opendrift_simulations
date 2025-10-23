@@ -42,7 +42,7 @@ gridsize=400 # meters
 grid = d.traj.make_grid(dx=gridsize, z=[0,-5])
 
 
-for tt in [48]:    # add more time indices as needed
+for tt in [12,24]:    # add more time indices as needed
     fig=plt.figure(figsize=[7,8])
     ax=plt.subplot(1,1,1, projection=ccrs.Orthographic(central_longitude=10.0, central_latitude=60.0))
     ds_time = d.isel(time=tt) # pick a time index

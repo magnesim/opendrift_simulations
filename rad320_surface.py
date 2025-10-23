@@ -39,7 +39,7 @@ o.add_reader([reader_norkyst, ])
 # Adjust configuration
 o.set_config('general:coastline_action','previous')
 #o.set_config('general:coastline_action','stranding')        # let particles go on land
-o.set_config('general:seafloor_action','lift_to_seafloor')
+#o.set_config('general:seafloor_action','lift_to_seafloor')
 
 
 o.set_config('drift:vertical_advection', False)             # disable vertical advection
@@ -60,7 +60,9 @@ o.list_configspec()   # List the configuration specification
 
 
 
-o.run(steps=total_time*3600/time_step +1, time_step=time_step, time_step_output=3600) 
+o.run(steps=total_time*3600/time_step +1, time_step=time_step, time_step_output=3600, 
+      #outfile='surface.nc'
+      ) 
 
 
 
@@ -72,5 +74,8 @@ if True:     # set True/False to enable/disable plotting
 o.animation(
 #            fast = True
             #background=['x_sea_water_velocity', 'y_sea_water_velocity'], scale=100,
+            #filename='surface_trajectory_animation_cur.mp4',
+            #fps=10,
+            #dpi=200
             )
 

@@ -3,6 +3,8 @@
 
 # plots and other output files
 *.png
+*.mp4
+*.gif 
 
 
 
