@@ -9,6 +9,9 @@ rad320_radionuclides.py
 rad320_trajan_analysis.py
 
 
+# Dependencies
+OpenDrift https://opendrift.github.io
+
 
 # Contact
 magnes@met.no
