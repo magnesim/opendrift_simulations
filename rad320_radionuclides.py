@@ -17,7 +17,7 @@ release_time     = datetime(2025,10,14,12,0)  # UTC
 #td=datetime.today()
 #release_time = datetime(td.year, td.month, td.day, 0)
 
-total_time       = 48  # hours 
+total_time       = 24  # hours 
 time_step        = 400   # seconds
 end_time         = release_time + timedelta(hours=total_time)
 #release_latitude   = 58.9 
@@ -28,8 +28,8 @@ release_latitude   =59.66
 
 
 # Path to Norkystv3 800m data on THREDDS
-#norkyst_thredds_url = 'https://thredds.met.no/thredds/dodsC/fou-hi/norkystv3_800m_m00_be'
-norkyst_thredds_url = 'https://thredds.met.no/thredds/dodsC/fou-hi/norkystv3_160m_m71_be'
+norkyst_thredds_url = 'https://thredds.met.no/thredds/dodsC/fou-hi/norkystv3_800m_m00_be'
+#norkyst_thredds_url = 'https://thredds.met.no/thredds/dodsC/fou-hi/norkystv3_160m_m71_be'
 
 
 
@@ -55,13 +55,22 @@ o.set_config('seed:total_release', 1.0e12)                  # total activity to 
 
 
 
-#o.set_config('drift:vertical_advection', False)             # disable vertical advection
 o.set_config('drift:horizontal_diffusivity', 1.)         # horizontal diffusivity in m2/s
+#o.set_config('drift:vertical_advection', False)             # disable vertical advection
+o.set_config('drift:water_column_stretching', True)
+o.set_config('drift:vertical_advection_correction', True)
 o.set_config('drift:vertical_mixing', True)
-o.set_config('vertical_mixing:diffusivitymodel','environment')  # apply vertical diffusivity from ocean model
-o.set_config('vertical_mixing:timestep', 600.) # seconds     # Vertical mixing requires fast time step
+o.set_config('vertical_mixing:diffusivitymodel','constant')  # apply vertical diffusivity from ocean model
+o.set_config('environment:constant:ocean_vertical_diffusivity',1.2e-4)
+o.set_config('vertical_mixing:timestep', 60.) # seconds     # Vertical mixing requires fast time step
 
 o.set_config('radionuclide:output:depthintervals', '-5')  # depth intervals for output of radionuclide density map
+
+
+o.list_configspec()   # List the configuration specification
+
+
+
 
 
 # Seed particles
@@ -71,21 +80,24 @@ o.seed_elements(lon=release_longitude, lat=release_latitude, z=0, radius=50, num
 
 
 
+
 # Run the model
-o.list_configspec()   # List the configuration specification
-
-
-
-
 o.run(steps=total_time*3600/time_step +1, time_step=time_step, time_step_output=3600, outfile='radionuclide.nc') 
 
 
 
 
+
+
+
+
+# Post processing and plotting
+
+
 #if True:
 if False:
     o.plot_vertical_distribution()
-    o.plot(linecolor='specie',vmin=0,vmax=o.nspecies-1,fast=True,)
+ #   o.plot(linecolor='specie',vmin=0,vmax=o.nspecies-1,fast=True,)
 
 
 o.animation( color='z',
@@ -97,6 +109,14 @@ o.animation( color='z',
 #            background=['x_sea_water_velocity', 'y_sea_water_velocity'], scale=100,
             )
 
+if False:
+    o.animation_profile(
+                color='specie',
+                vmin=0,vmax=o.nspecies-1,
+                legend=[o.specie_num2name(i) for i in range(o.nspecies)],
+#                    filename='animation_profile.mp4',
+            fps=8
+    )
 
 
 if False:

@@ -60,6 +60,8 @@ o.list_configspec()   # List the configuration specification
 
 
 
+
+# RUN THE MODEL 
 o.run(steps=total_time*3600/time_step +1, time_step=time_step, time_step_output=3600, 
       #outfile='surface.nc'
       ) 
@@ -68,7 +70,9 @@ o.run(steps=total_time*3600/time_step +1, time_step=time_step, time_step_output=
 
 
 if True:     # set True/False to enable/disable plotting
-    o.plot()
+    o.plot(
+        #filename='surface_trajectory.png',
+           )
 
 
 o.animation(
